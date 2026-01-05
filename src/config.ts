@@ -124,18 +124,18 @@ export const BASENAME = '/rtc/solution/vertcroom';
 export const HOST = 'https://rtc-test.bytedance.com';
 
 export const userConfig = {
-  appId: 'your_app_id',
-  appKey: 'your_app_key',
-  accessKeyId: 'your_access_key_id',
-  accessKeySecret: 'your_access_key_secret',
-  accountId: 'your_account_id',
+  appId: process.env.RTC_APP_ID || '',
+  appKey: process.env.RTC_APP_KEY || '',
+  accessKeyId: process.env.RTC_ACCESS_KEY_ID || '',
+  accessKeySecret: process.env.RTC_ACCESS_KEY_SECRET || '',
+  accountId: process.env.RTC_ACCOUNT_ID || '',
 };
 
 export const tosConfig = {
-  accessKeyId: 'your_access_key_id',
-  accessKeySecret: 'your_access_key_secret',
-  accountId: 'your_account_id',
-  region: 'your_bucket_region',
-  endpoint: 'your_bucket_endpoint',
-  bucket: 'your_bucket_name',
+  accessKeyId: process.env.TOS_ACCESS_KEY_ID || '',
+  accessKeySecret: process.env.TOS_ACCESS_KEY_SECRET || '',
+  accountId: process.env.TOS_ACCOUNT_ID || '',
+  region: process.env.TOS_REGION || '',
+  endpoint: process.env.TOS_ENDPOINT || '',
+  bucket: process.env.TOS_BUCKET || '',
 };

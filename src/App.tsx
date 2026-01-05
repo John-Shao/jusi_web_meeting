@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Login from '@/pages/Login';
@@ -11,6 +12,9 @@ import Small from './scene/Edus';
 import { useSelector } from './store';
 import '@/theme/dark.css';
 import '@/theme/light.css';
+
+// 加载 .env 文件
+dotenv.config();
 
 function App() {
   const theme = useSelector((state) => state.ui.theme);

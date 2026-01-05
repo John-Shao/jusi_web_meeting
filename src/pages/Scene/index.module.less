@@ -1,0 +1,121 @@
+.sceneWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timeWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .time {
+    font-family: 'Montserrat Alternates';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 56px;
+    text-align: right;
+    color: #020814;
+    margin-bottom: 4px;
+  }
+
+  .date {
+    font-family: 'PingFang SC';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: right;
+    color: #41464f;
+  }
+}
+
+.sceneContentWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 400px;
+}
+
+.sceneList {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.sceneItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:not(:first-child) {
+    margin-left: 40px;
+  }
+  :global {
+    span {
+      font-family: 'PingFang SC';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 27px;
+      color: #41464f;
+    }
+  }
+}
+
+.imgWrapper {
+  width: 160px;
+  height: 160px;
+  margin-bottom: 12px;
+  background: #f9f9f9;
+
+  border: 1px solid #dde2e9;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  :global {
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
+
+.sceneFooter {
+  position: relative;
+  margin-bottom: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .version {
+    font-family: 'PingFang SC';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: right;
+    color: #86909c;
+  }
+}
+
+.sceneFooterWrapper {
+  height: 100px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}

@@ -124,18 +124,18 @@ export const BASENAME = '/rtc/solution/vertcroom';
 export const HOST = 'https://rtc-test.bytedance.com';
 
 export const userConfig = {
-  appId: process.env.RTC_APP_ID || '',
-  appKey: process.env.RTC_APP_KEY || '',
-  accessKeyId: process.env.RTC_ACCESS_KEY_ID || '',
-  accessKeySecret: process.env.RTC_ACCESS_KEY_SECRET || '',
-  accountId: process.env.RTC_ACCOUNT_ID || '',
+  appId: process.env.REACT_APP_RTC_APP_ID || '',
+  appKey: process.env.REACT_APP_RTC_APP_KEY || '',
+  accessKeyId: process.env.REACT_APP_RTC_ACCESS_KEY_ID || '',
+  accessKeySecret: process.env.REACT_APP_RTC_ACCESS_KEY_SECRET || '',
+  accountId: process.env.REACT_APP_RTC_ACCOUNT_ID || '',
 };
 
 export const tosConfig = {
-  accessKeyId: process.env.TOS_ACCESS_KEY_ID || '',
-  accessKeySecret: process.env.TOS_ACCESS_KEY_SECRET || '',
-  accountId: process.env.TOS_ACCOUNT_ID || '',
-  region: process.env.TOS_REGION || '',
-  endpoint: process.env.TOS_ENDPOINT || '',
-  bucket: process.env.TOS_BUCKET || '',
+  accessKeyId: process.env.REACT_APP_TOS_ACCESS_KEY_ID || '',
+  accessKeySecret: process.env.REACT_APP_TOS_ACCESS_KEY_SECRET || '',
+  accountId: process.env.REACT_APP_TOS_ACCOUNT_ID || '',
+  region: process.env.REACT_APP_TOS_REGION || '',
+  endpoint: process.env.REACT_APP_TOS_ENDPOINT || '',
+  bucket: process.env.REACT_APP_TOS_BUCKET || '',
 };

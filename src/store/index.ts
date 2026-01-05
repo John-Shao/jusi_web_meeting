@@ -8,9 +8,7 @@ import {
 import rtsSlices from './slices/rts';
 import userSlices from './slices/user';
 import deviceSlices from './slices/devices';
-import edubRoomSlices from './slices/edubRoom';
 import meetingRoomSlices from './slices/meetingRoom';
-import edusRoomSlices from './slices/edusRoom';
 
 import uiSlices from './slices/ui';
 import settingSlices from './slices/setting';
@@ -23,8 +21,6 @@ const store = configureStore({
     user: userSlices,
     rts: rtsSlices,
     device: deviceSlices,
-    edubRoom: edubRoomSlices,
-    edusRoom: edusRoomSlices,
     meetingRoom: meetingRoomSlices,
     ui: uiSlices,
     setting: settingSlices,

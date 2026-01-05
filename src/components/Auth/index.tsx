@@ -39,15 +39,7 @@ const Auth: React.FC<{ children: React.ReactNode }> = function (props: {
   }, [searchParams]);
 
   const scene = useMemo(() => {
-    let scene;
-    if (location.pathname.includes(SceneType.Edub)) {
-      scene = SceneType.Edub;
-    } else if (location.pathname.includes(SceneType.Edus)) {
-      scene = SceneType.Edus;
-    } else if (location.pathname.includes(SceneType.Meeting)) {
-      scene = SceneType.Meeting;
-    }
-    return scene;
+    return SceneType.Meeting;
   }, []);
 
   useHideUserAuth({

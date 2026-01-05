@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ToastType as MeetingToastType } from '@/scene/Meeting/Room/ToastMessage/types';
-import { ToastType as EdusToastType } from '@/scene/Edus/Room/ToastMessage/types';
+import { ToastType as MeetingToastType } from '@/meeting/Room/ToastMessage/types';
 
 export enum Theme {
   dark = 'dark',
@@ -15,7 +14,7 @@ export interface UIState {
   toast: {
     open: boolean;
     title: string;
-    type: MeetingToastType | EdusToastType;
+    type: MeetingToastType;
     other?: any;
   };
 }

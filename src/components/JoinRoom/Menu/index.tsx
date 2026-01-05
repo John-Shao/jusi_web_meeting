@@ -32,11 +32,6 @@ export interface LoginState {
   roomIdErrType: ERROR_TYPES;
 }
 
-const SceneTag = {
-  [SceneType.Edub]: '大班课',
-  [SceneType.Edus]: '小班课',
-};
-
 interface JoinParams {
   user_name: string;
   user_role?: UserRole | undefined;
@@ -234,18 +229,6 @@ export default function (props: IMenuProps) {
           roomId: searchParams.get('roomId') || '',
         }}
       >
-        {scene !== SceneType.Meeting && (
-          <div className={styles.radioWrapper}>
-            <Form.Item name="user_role">
-              <Radio.Group>
-                <Radio value={1}>我是老师</Radio>
-                <Radio value={0}>我是学生</Radio>
-              </Radio.Group>
-            </Form.Item>
-
-            <span className={styles[`${scene}Tag`]}>{SceneTag[scene]}</span>
-          </div>
-        )}
         <div className={styles.formInLine}>
           <Tooltip
             open={roomIdErr !== ERROR_TYPES.VALID}

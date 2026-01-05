@@ -1,9 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import BackToSceneImg from '@/assets/images/scene/BackToScene.png';
+import BackToSceneImg from '@/assets/images/BackToScene.png';
 import styles from './index.module.less';
 import { useDispatch } from '@/store';
-import { localUserLeaveRoom as edubLeave } from '@/store/slices/edubRoom';
-import { localUserLeaveRoom as edusLeave } from '@/store/slices/edusRoom';
 import { localUserLeaveRoom as meetingLeave } from '@/store/slices/meetingRoom';
 import { JoinStatus, setJoining } from '@/store/slices/scene';
 import { RtcClient } from '@/core/rtc';
@@ -19,8 +17,6 @@ function Back() {
     RtcClient.stopAudioCapture();
     RtcClient.destroyEngine();
     dispatch(setJoining(JoinStatus.NotJoined));
-    dispatch(edubLeave());
-    dispatch(edusLeave());
     dispatch(meetingLeave());
   };
 

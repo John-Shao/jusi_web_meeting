@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export enum SceneType {
-  Meeting = 'vc',
-  Edub = 'edub',
-  Edus = 'edus',
+  Meeting = 'vc'  // 视频会议
 }
 
 export enum JoinStatus {

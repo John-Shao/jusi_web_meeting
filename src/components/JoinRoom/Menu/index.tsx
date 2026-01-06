@@ -16,7 +16,7 @@ import IconButton from './IconButton';
 import styles from './index.module.less';
 
 import { RtcClient } from '@/core/rtc';
-import { JoinStatus, SceneType, setJoining } from '@/store/slices/scene';
+import { JoinStatus, setJoining } from '@/store/slices/scene';
 import { DeviceState, UserRole } from '@/types/state';
 import Icon from '@/components/Icon';
 
@@ -43,7 +43,6 @@ let first = true;
 
 interface IMenuProps {
   onDeviceDetectModal: () => void;
-  scene: SceneType;
   beforeJoin?: (formValue: { name: string; roomId: string; user_role: UserRole }) => void;
 
   localUser: {
@@ -59,7 +58,6 @@ interface IMenuProps {
 export default function (props: IMenuProps) {
   const {
     onDeviceDetectModal,
-    scene,
     beforeJoin,
     localUser,
     onChangeCamera,
@@ -181,14 +179,11 @@ export default function (props: IMenuProps) {
       mic: localUser.mic,
     };
 
-    if (scene !== SceneType.Meeting) {
-      payload.user_role = formValue.user_role;
-    }
 
     const res = await onJoinRoom(payload);
 
     if (res) {
-      let url = `/${scene}?roomId=${formValue.roomId}&username=${formValue.name}`;
+      let url = `/vc?roomId=${formValue.roomId}&username=${formValue.name}`;
 
       if (formValue.user_role !== undefined) {
         url = `${url}&role=${formValue.user_role}`;
@@ -217,7 +212,7 @@ export default function (props: IMenuProps) {
     <div
       className={styles.menuContainer}
       style={{
-        height: scene === SceneType.Meeting ? 80 : 128,
+        height: 80,
       }}
     >
       <Form

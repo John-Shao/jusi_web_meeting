@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SceneType } from './scene';
 
 export interface RTSState {
   app_id?: string;

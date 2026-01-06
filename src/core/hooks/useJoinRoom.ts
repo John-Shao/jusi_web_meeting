@@ -8,7 +8,7 @@ import { BoardClient } from '@/core/board';
 import { logout } from '@/store/slices/user';
 import { DeviceState, RoomMicStatus, Silence, UserRole } from '@/types/state';
 import { isRtsError } from '@/utils/rtsUtils';
-import { JoinStatus, SceneType, setJoining } from '@/store/slices/scene';
+import { JoinStatus, setJoining } from '@/store/slices/scene';
 
 const useJoinRoom = <
   R extends {
@@ -16,7 +16,6 @@ const useJoinRoom = <
     response: any;
   }
 >(
-  scene: SceneType,
   localUser: {
     camera: DeviceState;
     mic: DeviceState;
@@ -56,7 +55,7 @@ const useJoinRoom = <
     // rts 服务端错误
     if (res.code !== 200) {
       if (res.code === 403) {
-        message.error(`该房间已有${scene === SceneType.Meeting ? '其他主持人' : '老师'}`);
+        message.error('该房间已有其他主持人');
       }
       if (res.code === 401) {
         message.error('房间人数已满');

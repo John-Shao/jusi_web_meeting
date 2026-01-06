@@ -8,12 +8,9 @@ import {
 import Utils from '@/utils';
 import { RtcClient } from '@/core/rtc';
 import { BoardClient } from '@/core/board';
-import { SceneType } from '@/store/slices/scene';
 import { setAiAns } from '@/store/slices/setting';
 
-const useSceneMounted = (
-  scene: SceneType
-): {
+const useSceneMounted = (): {
   hasEngine: boolean;
 } => {
   const [hasEngine, setHasEngine] = useState(false);

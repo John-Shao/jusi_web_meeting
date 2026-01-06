@@ -8,7 +8,7 @@ import { RtcClient } from '@/core/rtc';
 import { useJoinRoomRtcListener } from '@/core/rtcHooks';
 import camPause from '@/assets/images/camPause.png';
 import { DeviceState, UserRole } from '@/types/state';
-import { JoinStatus, SceneType, setJoining } from '@/store/slices/scene';
+import { JoinStatus, setJoining } from '@/store/slices/scene';
 
 import Back from './Back';
 import Menu from './Menu';
@@ -21,7 +21,6 @@ import { setAudioPlayBack, setCamera, setMicrophone } from '@/store/slices/devic
 const PlayerDomId = 'preview-player';
 
 interface IProps {
-  scene: SceneType;
   /**
    * 处理进房页面的form参数
    * @param formValue
@@ -44,7 +43,7 @@ interface IProps {
 }
 
 export default function (props: IProps) {
-  const { scene, beforeJoin, localUser, onChangeCamera, onChangeMic, onJoinRoom } = props;
+  const { beforeJoin, localUser, onChangeCamera, onChangeMic, onJoinRoom } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -147,7 +146,6 @@ export default function (props: IProps) {
         onChangeCamera={onChangeCamera}
         onChangeMic={onChangeMic}
         onDeviceDetectModal={handleDeviceDetectModal}
-        scene={scene}
         beforeJoin={beforeJoin}
         onJoinRoom={onJoinRoom}
       />

@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 
 import JoinRoom from '@/components/JoinRoom';
-import { JoinStatus, SceneType, setJoining, setScene } from '@/store/slices/scene';
+import { JoinStatus, setJoining } from '@/store/slices/scene';
 
 import Room from './Room';
 import { useDevice, useSceneMounted } from '@/core/rtcHooks';
@@ -39,7 +39,7 @@ function Meeting() {
 
   const autoJoin = useRef<boolean>(true);
 
-  const { hasEngine } = useSceneMounted(SceneType.Meeting);
+  const { hasEngine } = useSceneMounted();
 
   useRTCEventListener(hasEngine);
   useRTSListener();
@@ -89,7 +89,6 @@ function Meeting() {
   };
 
   const joinRoom = useJoinRoom(
-    SceneType.Meeting,
     localUser as BaseUser,
     meetingJoinRoom as unknown as (p: any) => Promise<SendServerMessageRes<JoinMeetingRoomRes>>,
     handleJoin
@@ -117,7 +116,6 @@ function Meeting() {
 
     if (devicePermissions.video !== undefined) {
       mount();
-      dispatch(setScene(SceneType.Meeting));
     }
   }, [roomId, username, hasEngine, devicePermissions]);
 
@@ -165,7 +163,7 @@ function Meeting() {
       localUser={localUser as BaseUser}
       onChangeCamera={handleLocalCameraChange}
       onChangeMic={handleLocalMicChange}
-      scene={SceneType.Meeting}
+
       beforeJoin={handleLocalJoin}
       onJoinRoom={joinRoom}
     />

@@ -46,6 +46,9 @@ export const freeLoginApi = (body: {
 }> => {
   return fetch(`${HOST}${BASEURL}`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
       event_name: 'passwordFreeLogin',
       content: JSON.stringify({
@@ -73,6 +76,9 @@ export const setAppInfo = (
     `${HOST}${BASEURL}`,
     {
       method: 'POST',
+      headers: {
+      'Content-Type': 'application/json',
+    },
       body: JSON.stringify({
         event_name: 'setAppInfo',
         content: JSON.stringify(body),
@@ -97,6 +103,9 @@ export const changeUserName = (body: {
 }> => {
   return fetch(`${HOST}${BASEURL}`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
       event_name: 'changeUserName',
       content: JSON.stringify(body),

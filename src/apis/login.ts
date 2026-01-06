@@ -26,8 +26,7 @@ interface ISetAppInfo {
   volc_ak: string;
   volc_sk: string;
   account_id: string;
-  scenes_name: string;
-}
+} 
 
 /**
  * 发送短信验证码

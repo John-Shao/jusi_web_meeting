@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { message } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { SceneType } from '@/store/slices/scene';
 import * as Apis from '@/apis/login';
 import { useDispatch } from '@/store';
 import { setRTSParams } from '@/store/slices/rts';
@@ -14,25 +13,35 @@ interface IHideUser {
   roomId: string | null;
   visibility: string | null;
   role: string | null;
+  code?: string | null;
 }
 
 interface IHideUserAuth {
   hideUser: IHideUser;
-  scene?: SceneType;
   onVerify: (status: VerifiedStatus) => void;
 }
 
 const useHideUserAuth = (props: IHideUserAuth) => {
-  const { scene, hideUser, onVerify } = props;
+  const { hideUser, onVerify } = props;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (hideUser.visibility === 'false' && scene) {
-      const freeLogin = async () => {
-        const res = await Apis.freeLoginApi({
-          user_name: hideUser.name || 'hideUser',
+    if (hideUser.visibility === 'false') {
+      const smsLogin = async () => {
+        const phone = hideUser.name;
+        const code = hideUser.code;
+
+        if (!phone || !code) {
+          message.error('隐藏登录需要在 URL 中提供手机号（username）和验证码（code）');
+          onVerify(VerifiedStatus.Failed);
+          return;
+        }
+
+        const res = await Apis.smsLoginApi({
+          phone,
+          code,
         });
 
         if (res.code !== 200) {
@@ -48,7 +57,6 @@ const useHideUserAuth = (props: IHideUserAuth) => {
           volc_ak: userConfig.accessKeyId,
           volc_sk: userConfig.accessKeySecret,
           account_id: userConfig.accountId,
-          scenes_name: scene,
         });
 
         if (rtsRes.code !== 200) {
@@ -67,9 +75,9 @@ const useHideUserAuth = (props: IHideUserAuth) => {
 
       onVerify(VerifiedStatus.Waiting);
 
-      freeLogin();
+      smsLogin();
     }
-  }, [hideUser, scene]);
+  }, [hideUser]);
 };
 
 export default useHideUserAuth;

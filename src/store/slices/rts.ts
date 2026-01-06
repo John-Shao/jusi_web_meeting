@@ -9,7 +9,6 @@ export interface RTSState {
   app_set?: {
     app_id: string;
     rts_token: string;
-    scenes_name: SceneType;
   }[];
 }
 

@@ -30,37 +30,6 @@ interface ISetAppInfo {
 }
 
 /**
- * 发起业务服务器请求 - 免密登录
- * 主要用于云录屏场景
- * 云录屏场景下没有登录页面，也不需要输入验证码, 用户通过在 url 指定 userId 和 role 识别出当前是云录屏,
- * 免密登录并且获得业务服务器返回的 user_id 和 login_token
- * @param body
- * @returns
- */
-export const freeLoginApi = (body: {
-  user_name: string;
-}): Promise<{
-  code: number;
-  message: string;
-  response: IUserInfo;
-}> => {
-  return fetch(`${HOST}${BASEURL}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      event_name: 'passwordFreeLogin',
-      content: JSON.stringify({
-        user_name: body.user_name,
-      }),
-    }),
-  }).then((res) => {
-    return res.json();
-  });
-};
-
-/**
  * 发送短信验证码
  * 注意：后端 event_name 如与现有后端不一致，请与后端确认并修改 event_name
  */

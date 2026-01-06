@@ -61,6 +61,60 @@ export const freeLoginApi = (body: {
 };
 
 /**
+ * 发送短信验证码
+ * 注意：后端 event_name 如与现有后端不一致，请与后端确认并修改 event_name
+ */
+export const sendSmsCodeApi = (body: {
+  phone: string
+  }): Promise<{
+  code: number;
+  message: string;
+}> => {
+  return fetch(`${HOST}${BASEURL}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      event_name: 'sendSmsCode',
+      content: JSON.stringify({
+        phone: body.phone,
+      }),
+    }),
+  }).then((res) => {
+    return res.json();
+  });
+};
+
+/**
+ * 短信登录（使用手机号 + 验证码），返回与免密登录相同的 IUserInfo
+ */
+export const smsLoginApi = (body: {
+  phone: string;
+  code: string
+  }): Promise<{
+  code: number;
+  message: string;
+  response: IUserInfo;
+}> => {
+  return fetch(`${HOST}${BASEURL}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      event_name: 'smsLogin',
+      content: JSON.stringify({
+        phone: body.phone,
+        code: body.code,
+      }),
+    }),
+  }).then((res) => {
+    return res.json();
+  });
+};
+
+/**
  * 获取加入rts房间必要的参数
  * @param body
  * @returns

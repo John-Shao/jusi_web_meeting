@@ -1,6 +1,6 @@
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Checkbox, Form, Input, message } from 'antd';
-import { StoreValue } from 'antd/lib/form/interface';
 import SceneLogo from '@/assets/images/SceneLogo.png';
 import * as Apis from '@/apis/login';
 import { useDispatch } from '@/store';
@@ -8,57 +8,61 @@ import { login } from '@/store/slices/user';
 import Footer from './Footer';
 import styles from './index.module.less';
 
-enum ERROR_TYPES {
-  VALID,
-  EMPTY_STRING,
-  INVALID_CHARACTERS,
-}
-
-const messages = {
-  userNameErrType: {
-    1: '请填写用户名',
-    2: '用户名输入有误，请重新输入',
-  },
-};
+const PHONE_REGEX = /^1\d{10}$/; // 简单校验，仅适用于中国手机号
 
 export default function () {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  /**
-   * 验证码登陆
-   * 1. 校验验证码
-   * 2. 校验成功后，拿返回到 login_token 并存储
-   * 3. 跳转到进房页面
-   * @returns
-   */
+  const [countdown, setCountdown] = useState(0);
+  const timerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, []);
+
+  const handleSendCode = async () => {
+    try {
+      const values = await form.validateFields(['phone']);
+      const phone: string = values.phone;
+      const res = await Apis.sendSmsCodeApi({ phone });
+      if (res.code !== 200) {
+        message.error(res.message);
+        return;
+      }
+      message.success('验证码已发送');
+      setCountdown(60);
+      timerRef.current = window.setInterval(() => {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            if (timerRef.current) {
+              clearInterval(timerRef.current);
+              timerRef.current = null;
+            }
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } catch (err) {
+      // 验证未通过或发送失败
+    }
+  };
+
   const handleLogin = async () => {
-    // 验证校验码格式正确性
     const formValue = await form.validateFields();
-    const res = await Apis.freeLoginApi({
-      user_name: formValue.user_name,
-    });
+    const res = await Apis.smsLoginApi({ phone: formValue.phone, code: formValue.code });
     if (res.code !== 200) {
       message.error(res.message);
       return;
     }
     dispatch(login(res.response));
     navigate(`/${location.search}`);
-  };
-
-  const validator = (
-    value: StoreValue,
-    errorTypeKey: 'userNameErrType',
-    regRes: boolean
-  ): Promise<void | Error> => {
-    let result: Promise<Error | void>;
-    if (!value) {
-      const _value = value ? ERROR_TYPES.INVALID_CHARACTERS : ERROR_TYPES.EMPTY_STRING;
-      result = Promise.reject(new Error(messages[errorTypeKey][_value]));
-    } else {
-      result = Promise.resolve();
-    }
-    return result;
   };
 
   return (
@@ -70,31 +74,47 @@ export default function () {
           </div>
           <Form form={form} onFinish={handleLogin} initialValues={{}}>
             <Form.Item
-              name="user_name"
+              name="phone"
               validateTrigger="onChange"
               rules={[
+                { required: true, message: '请输入手机号' },
                 {
-                  required: true,
                   validator: (_, value) => {
-                    const res = !/^[0-9a-zA-Z_\-@\u4e00-\u9fa5]*$/.test(value);
-                    return validator(value, 'userNameErrType', res);
+                    if (!value) return Promise.reject(new Error('请输入手机号'));
+                    if (!PHONE_REGEX.test(value)) return Promise.reject(new Error('手机号格式不正确'));
+                    return Promise.resolve();
                   },
                 },
               ]}
             >
-              <Input autoComplete="off" placeholder="输入用户名" className={styles['phone-input']} />
+              <Input autoComplete="off" placeholder="手机号" className={styles['phone-input']} />
             </Form.Item>
+
+            <Form.Item
+              name="code"
+              rules={[
+                { required: true, message: '请输入验证码' },
+                { len: 6, message: '请输入6位验证码' },
+              ]}
+            >
+              <Input
+                autoComplete="off"
+                placeholder="短信验证码"
+                className={styles['phone-input']}
+                suffix={
+                  <button type="button" onClick={handleSendCode} disabled={countdown > 0}>
+                    {countdown > 0 ? `${countdown}s` : '获取验证码'}
+                  </button>
+                }
+              />
+            </Form.Item>
+
             <Form.Item
               name="agree"
               valuePropName="checked"
               wrapperCol={{ span: 24 }}
               className={styles['login-agree']}
-              rules={[
-                {
-                  required: true,
-                  message: '请先阅读并同意',
-                },
-              ]}
+              rules={[{ required: true, message: '请先阅读并同意' }]}
             >
               <Checkbox>
                 已阅读并同意
@@ -107,19 +127,12 @@ export default function () {
                 </a>
               </Checkbox>
             </Form.Item>
-            <Form.Item
-              noStyle
-              shouldUpdate={(prevValues, curValues) => prevValues.agree !== curValues.agree}
-            >
+
+            <Form.Item noStyle shouldUpdate={(prevValues, curValues) => prevValues.agree !== curValues.agree}>
               {({ getFieldValue }) => {
                 return (
                   <Form.Item>
-                    <Button
-                      disabled={!getFieldValue('agree')}
-                      htmlType="submit"
-                      type="primary"
-                      className={styles['login-check']}
-                    >
+                    <Button disabled={!getFieldValue('agree')} htmlType="submit" type="primary" className={styles['login-check']}>
                       登录
                     </Button>
                   </Form.Item>

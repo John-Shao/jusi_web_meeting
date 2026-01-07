@@ -71,7 +71,7 @@ export const smsLoginApi = (body: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      event_name: 'smsLogin',
+      event_name: 'smsCodeLogin',
       content: JSON.stringify({
         phone: body.phone,
         code: body.code,

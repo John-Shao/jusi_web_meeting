@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import VERTC from '@volcengine/rtc';
 import { Form, Input, message, Popover, Tooltip } from 'antd';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { StoreValue } from 'antd/lib/form/interface';
 import Setting from '@/assets/images/Setting.svg';
 import Logo from '@/assets/images/Logo.svg';
@@ -50,6 +50,7 @@ export default function (props: HeaderProps) {
   const user = useSelector((state) => state.user);
 
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const theme = useSelector((state) => state.ui.theme);
   const [form] = Form.useForm();
 
@@ -64,7 +65,7 @@ export default function (props: HeaderProps) {
   const handleLogout = async () => {
     dispatch(logout());
     onLogout && onLogout();
-    window.open('https://bytedance.larkoffice.com/share/base/form/shrcn238aNIfy3vjlN9GQ46eR0f', '_blank', 'noopener, noreferrer');
+    navigate('/login');
   };
 
   const handleChangeUserName = async () => {

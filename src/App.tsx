@@ -5,7 +5,9 @@ import Scene from '@/pages/Scene';
 import Replay from '@/pages/Replay';
 import { BASENAME } from './config';
 import Auth from './components/Auth';
-import Meeting from './meeting';
+import Meeting from './scene/Meeting';
+import Edub from './scene/Edub';
+import Small from './scene/Edus';
 import { useSelector } from './store';
 import '@/theme/dark.css';
 import '@/theme/light.css';
@@ -26,6 +28,8 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="replay" element={<Replay />} />
             <Route path="vc" element={<Meeting />} />
+            <Route path="edub" element={<Edub />} />
+            <Route path="edus" element={<Small />} />
             <Route path="/:unknown" element={<Navigate to="/" replace />} />
             <Route index element={<Scene />} />
           </Route>

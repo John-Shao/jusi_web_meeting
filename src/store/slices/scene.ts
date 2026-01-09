@@ -1,5 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export enum SceneType {
+  Meeting = 'vc',
+  Edub = 'edub',
+  Edus = 'edus',
+}
+
 export enum JoinStatus {
   NotJoined = 'notJoined',
   Joinning = 'joinning',
@@ -7,6 +13,7 @@ export enum JoinStatus {
 }
 
 export interface SceneState {
+  scene?: SceneType;
   joinStatus: JoinStatus;
 }
 
@@ -19,12 +26,16 @@ export const sceneSlice = createSlice({
     joinStatus: JoinStatus.NotJoined,
   } as SceneState,
   reducers: {
+    setScene: (state, action: PayloadAction<SceneType>) => {
+      state.scene = action.payload;
+    },
+
     setJoining: (state, action: PayloadAction<JoinStatus>) => {
       state.joinStatus = action.payload;
     },
   },
 });
 
-export const { setJoining } = sceneSlice.actions;
+export const { setScene, setJoining } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

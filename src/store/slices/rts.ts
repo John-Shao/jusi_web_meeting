@@ -1,10 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SceneType } from './scene';
 
 export interface RTSState {
   app_id?: string;
   rts_token?: string;
   server_signature?: string;
   server_url?: string;
+  app_set?: {
+    app_id: string;
+    rts_token: string;
+    scenes_name: SceneType;
+  }[];
 }
 
 /**
@@ -19,6 +25,7 @@ export const rtsSlice = createSlice({
       state.rts_token = action.payload.rts_token;
       state.server_signature = action.payload.server_signature;
       state.server_url = action.payload.server_url;
+      state.app_set = action.payload.app_set;
     },
     removeRTSParams: (state) => {
       state.app_id = undefined;

@@ -26,11 +26,11 @@ interface ISetAppInfo {
   volc_ak: string;
   volc_sk: string;
   account_id: string;
-} 
+  scenes_name: string;
+}
 
 /**
  * 发送短信验证码
- * 注意：后端 event_name 如与现有后端不一致，请与后端确认并修改 event_name
  */
 export const sendSmsCodeApi = (body: {
   phone: string

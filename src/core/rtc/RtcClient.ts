@@ -152,7 +152,9 @@ export class RtcClient {
 
       this.engine.on(VERTC.events.onUserMessageReceivedOutsideRoom, callback);
       try {
-        // console.log(`call RtcClient.sendServerMessage for ${eventname}: `, content);
+        // 打印发送到服务器的完整消息
+        console.log(`[RTC Client] sendServerMessage ${eventname}:`, content);
+        
         const sendMessagePromise = this.engine.sendServerMessage(JSON.stringify(content));
         sendMessagePromise.catch((e) => {
           console.log(`RtcClient.sendServerMessage for ${eventname} reject with error: `, e);

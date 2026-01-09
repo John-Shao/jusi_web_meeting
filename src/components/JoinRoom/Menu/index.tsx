@@ -16,7 +16,7 @@ import IconButton from './IconButton';
 import styles from './index.module.less';
 
 import { RtcClient } from '@/core/rtc';
-import { JoinStatus, setJoining } from '@/store/slices/scene';
+import { JoinStatus, SceneType, setJoining } from '@/store/slices/scene';
 import { DeviceState, UserRole } from '@/types/state';
 import Icon from '@/components/Icon';
 
@@ -32,6 +32,11 @@ export interface LoginState {
   roomIdErrType: ERROR_TYPES;
 }
 
+const SceneTag = {
+  [SceneType.Edub]: '大班课',
+  [SceneType.Edus]: '小班课',
+};
+
 interface JoinParams {
   user_name: string;
   user_role?: UserRole | undefined;
@@ -43,6 +48,7 @@ let first = true;
 
 interface IMenuProps {
   onDeviceDetectModal: () => void;
+  scene: SceneType;
   beforeJoin?: (formValue: { name: string; roomId: string; user_role: UserRole }) => void;
 
   localUser: {
@@ -58,6 +64,7 @@ interface IMenuProps {
 export default function (props: IMenuProps) {
   const {
     onDeviceDetectModal,
+    scene,
     beforeJoin,
     localUser,
     onChangeCamera,
@@ -179,11 +186,14 @@ export default function (props: IMenuProps) {
       mic: localUser.mic,
     };
 
+    if (scene !== SceneType.Meeting) {
+      payload.user_role = formValue.user_role;
+    }
 
     const res = await onJoinRoom(payload);
 
     if (res) {
-      let url = `/vc?roomId=${formValue.roomId}&username=${formValue.name}`;
+      let url = `/${scene}?roomId=${formValue.roomId}&username=${formValue.name}`;
 
       if (formValue.user_role !== undefined) {
         url = `${url}&role=${formValue.user_role}`;
@@ -212,7 +222,7 @@ export default function (props: IMenuProps) {
     <div
       className={styles.menuContainer}
       style={{
-        height: 80,
+        height: scene === SceneType.Meeting ? 80 : 128,
       }}
     >
       <Form
@@ -224,6 +234,18 @@ export default function (props: IMenuProps) {
           roomId: searchParams.get('roomId') || '',
         }}
       >
+        {scene !== SceneType.Meeting && (
+          <div className={styles.radioWrapper}>
+            <Form.Item name="user_role">
+              <Radio.Group>
+                <Radio value={1}>我是老师</Radio>
+                <Radio value={0}>我是学生</Radio>
+              </Radio.Group>
+            </Form.Item>
+
+            <span className={styles[`${scene}Tag`]}>{SceneTag[scene]}</span>
+          </div>
+        )}
         <div className={styles.formInLine}>
           <Tooltip
             open={roomIdErr !== ERROR_TYPES.VALID}

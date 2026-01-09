@@ -10,7 +10,7 @@ import {
   IOnOperateSelfMicApply,
   IOnSharePermissionApply,
   IOnStartShare,
-} from '@/meeting/hooks/informType';
+} from '@/scene/Meeting/hooks/informType';
 import {
   ApplyType,
   BaseUser,

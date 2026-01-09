@@ -5,6 +5,7 @@ import * as Apis from '@/apis/login';
 import { setRTSParams } from '@/store/slices/rts';
 import { RtcClient } from '@/core/rtc';
 import { useDispatch, useSelector } from '@/store';
+import { SceneType } from '@/store/slices/scene';
 import { VerifiedStatus } from './types';
 import useHideUserAuth from './useHideUserAuth';
 import { BASENAME, userConfig } from '@/config';
@@ -28,18 +29,29 @@ const Auth: React.FC<{ children: React.ReactNode }> = function (props: {
     const roomId = searchParams.get('roomId');
     const visibility = searchParams.get('visibility');
     const role = searchParams.get('role');
-    const code = searchParams.get('code');
 
     return {
       name,
       roomId,
       visibility,
       role,
-      code,
     };
   }, [searchParams]);
 
+  const scene = useMemo(() => {
+    let scene;
+    if (location.pathname.includes(SceneType.Edub)) {
+      scene = SceneType.Edub;
+    } else if (location.pathname.includes(SceneType.Edus)) {
+      scene = SceneType.Edus;
+    } else if (location.pathname.includes(SceneType.Meeting)) {
+      scene = SceneType.Meeting;
+    }
+    return scene;
+  }, []);
+
   useHideUserAuth({
+    scene,
     hideUser,
     onVerify: setVerified,
   });
@@ -84,6 +96,7 @@ const Auth: React.FC<{ children: React.ReactNode }> = function (props: {
           volc_ak: userConfig.accessKeyId,
           volc_sk: userConfig.accessKeySecret,
           account_id: userConfig.accountId,
+          scenes_name: scene || 'vc',
         });
 
         if (rtsRes.code !== 200) {

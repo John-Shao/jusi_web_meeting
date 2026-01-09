@@ -43,7 +43,7 @@ function Scene() {
         <Time />
         <div className={style.sceneList}>
           {SceneList.map((scene) => {
-            return <SceneItem {...scene} key='vc' />;
+            return <SceneItem {...scene} key={scene.scene} />;
           })}
         </div>
       </div>

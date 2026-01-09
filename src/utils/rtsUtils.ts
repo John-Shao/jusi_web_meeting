@@ -11,7 +11,14 @@ export async function sendServerMessage<T = any>(
   data?: Record<string, any>
 ): Promise<any | RtsError> {
   try {
+    // 打印发送的请求消息
+    console.log(`[RTS Request] ${event}:`, data);
+    
     const res = await RtcClient.sendServerMessage<T>(event, data ? JSON.stringify(data) : '{}');
+    
+    // 打印收到的响应消息
+    console.log(`[RTS Response] ${event}:`, res);
+    
     if (res.code !== 200) {
       console.error(`${event} err`, res.code, ErrCodeMap[res.code as keyof typeof ErrCodeMap]);
     }

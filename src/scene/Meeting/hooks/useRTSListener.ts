@@ -61,7 +61,7 @@ const useRtcListeners = () => {
     }
 
     const msgObj: InformDataType = JSON.parse(message || '{}');
-    // console.log('handleMessageReceived', userId, msgObj);
+    console.log('[RTS Message Received] handleMessageReceived:', userId, msgObj);
 
     if (msgObj.message_type !== 'inform') {
       return;
@@ -69,11 +69,11 @@ const useRtcListeners = () => {
 
     // 进房
     if (msgObj.event === RtsEvent.vcOnJoinRoom) {
-      console.log('进房');
+      console.log('[RTS Event] 进房');
       if (!room.host_user_id) {
         const roomInfo = await rtsApi.reSync();
         if (!isRtsError(roomInfo)) {
-          console.log('主持人变化');
+          console.log('[RTS Event] 主持人变化');
           if (roomInfo.response.room.host_user_id) {
             dispatch(localUserJoinRoom(roomInfo.response));
           }
@@ -84,13 +84,13 @@ const useRtcListeners = () => {
     }
     // 退房
     if (msgObj.event === RtsEvent.vcOnLeaveRoom) {
-      console.log('退房');
+      console.log('[RTS Event] 退房');
       dispatch(remoteUserLeaveRoom(msgObj.data));
     }
 
     // 结束会议
     if (msgObj.event === RtsEvent.vcOnFinishRoom) {
-      console.log('结束会议');
+      console.log('[RTS Event] 结束会议');
       const { reason } = msgObj.data;
       if (reason === FinishRoomReason.TimeEnded) {
         await leaveRoom();
@@ -113,10 +113,10 @@ const useRtcListeners = () => {
     if (msgObj.event === RtsEvent.vcOnOperateSelfCamera) {
       const operation = msgObj.data.operate === DeviceState.Open ? '打开' : '关闭';
       if (room.localUser.user_id !== msgObj.data.user_id) {
-        console.log(`远端用户${operation}摄像头`);
+        console.log(`[RTS Event] 远端用户${operation}摄像头`);
         dispatch(remoteUserChangeCamera(msgObj.data));
       } else {
-        console.log(`本端用户${operation}摄像头`);
+        console.log(`[RTS Event] 本端用户${operation}摄像头`);
       }
     }
 
@@ -124,16 +124,16 @@ const useRtcListeners = () => {
     if (msgObj.event === RtsEvent.vcOnOperateSelfMic) {
       const operation = msgObj.data.operate === DeviceState.Open ? '打开' : '关闭';
       if (room.localUser.user_id !== msgObj.data.user_id) {
-        console.log(`远端用户${operation}麦克风`);
+        console.log(`[RTS Event] 远端用户${operation}麦克风`);
         dispatch(remoteUserChangeMic(msgObj.data));
       } else {
-        console.log(`本端用户${operation}麦克风`);
+        console.log(`[RTS Event] 本端用户${operation}麦克风`);
       }
     }
 
     // 全体静音
     if (msgObj.event === RtsEvent.vcOnOperateAllMic) {
-      console.log('全体静音');
+      console.log('[RTS Event] 全体静音');
 
       if (!isHost) {
         // 主持人自己不受影响
@@ -153,7 +153,7 @@ const useRtcListeners = () => {
     if (msgObj.event === RtsEvent.vcOnStartShare) {
       const { user_name: userName, user_id: userId, share_type: shareType } = msgObj.data;
       const shareTypeStr = shareType === ShareType.Board ? '白板' : '屏幕';
-      console.log(`用户${userName}开始分享${shareTypeStr}`);
+      console.log(`[RTS Event] 用户${userName}开始分享${shareTypeStr}`);
       dispatch(startShare(msgObj.data));
 
       // 有人抢当前用户的共享
@@ -167,7 +167,7 @@ const useRtcListeners = () => {
     }
     // 房间内结束共享
     if (msgObj.event === RtsEvent.vcOnFinishShare) {
-      console.log('结束共享');
+      console.log('[RTS Event] 结束共享');
       BoardClient.leaveRoom();
       dispatch(stopShare(msgObj.data));
     }
@@ -176,7 +176,7 @@ const useRtcListeners = () => {
     if (msgObj.event === RtsEvent.vcOnHostChange) {
       const roomInfo = await rtsApi.reSync();
       if (!isRtsError(roomInfo)) {
-        console.log('主持人变化');
+        console.log('[RTS Event] 主持人变化');
         if (roomInfo.response.room.host_user_id) {
           dispatch(localUserJoinRoom(roomInfo.response));
         }
@@ -190,7 +190,7 @@ const useRtcListeners = () => {
         return;
       }
 
-      console.log('远端用户请求开启麦克风');
+      console.log('[RTS Event] 远端用户请求开启麦克风');
       const applyUsers = room.remoteUsers?.filter(
         (user) => user.applying.includes(ApplyType.Mic) && user.user_id !== msgObj.data.user_id
       );
@@ -231,7 +231,7 @@ const useRtcListeners = () => {
 
         RtcClient.unmuteStream(MediaType.AUDIO);
         dispatch(localUserChangeMic(DeviceState.Open));
-        console.log('本端用户获得开启麦克风权限');
+        console.log('[RTS Event] 本端用户获得开启麦克风权限');
       }
     }
 
@@ -241,7 +241,7 @@ const useRtcListeners = () => {
         // 如果不是主持人，不处理
         return;
       }
-      console.log('远端用户申请共享权限');
+      console.log('[RTS Event] 远端用户申请共享权限');
       const { user_name: userName } = msgObj.data;
 
       const applyUsers = room.remoteUsers?.filter(
@@ -282,7 +282,7 @@ const useRtcListeners = () => {
         );
         if (permit === Permission.HasPermission) {
           Message.info('主持人授予了你共享权限');
-          console.log('主持人授予了你共享权限');
+          console.log('[RTS Event] 主持人授予了你共享权限');
 
           if (room.share_status === ShareStatus.Sharing && room.share_type === ShareType.Board) {
             await rtsApi.startShare({
@@ -291,7 +291,7 @@ const useRtcListeners = () => {
           }
         } else {
           Message.info('主持人拒绝授予你共享权限');
-          console.log('主持人拒绝授予你共享权限');
+          console.log('[RTS Event] 主持人拒绝授予你共享权限');
         }
       }
     }
@@ -302,7 +302,7 @@ const useRtcListeners = () => {
 
       if (userId === room.localUser?.user_id) {
         const operation = operate === DeviceState.Open ? '打开' : '关闭';
-        console.log(`主持人请求${operation}你的摄像头`);
+        console.log(`[RTS Event] 主持人请求${operation}你的摄像头`);
 
         // 远端主持人请求打开本端用户的摄像头, 需要弹出弹窗, 获得本端
         // 用户同意
@@ -334,7 +334,7 @@ const useRtcListeners = () => {
 
       if (usesId === room.localUser?.user_id) {
         const operation = operate === DeviceState.Open ? '打开' : '关闭';
-        console.log(`主持人请求${operation}你的麦克风`);
+        console.log(`[RTS Event] 主持人请求${operation}你的麦克风`);
 
         // 远端主持人请求打开本端用户的麦克风, 需要弹出弹窗, 获得本端
         // 用户同意
@@ -447,14 +447,17 @@ const useRtcListeners = () => {
   };
 
   const onUserMessageReceivedOutsideRoom = async (e: UserMessageEvent) => {
+    console.log('[RTS Listener] onUserMessageReceivedOutsideRoom:', e);
     return handleMessageReceived(e);
   };
 
   const onUserMessageReceived = async (e: UserMessageEvent) => {
+    console.log('[RTS Listener] onUserMessageReceived:', e);
     return handleMessageReceived(e);
   };
 
   const onRoomMessageReceived = async (e: UserMessageEvent) => {
+    console.log('[RTS Listener] onRoomMessageReceived:', e);
     return handleMessageReceived(e);
   };
 

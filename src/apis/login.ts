@@ -1,7 +1,7 @@
 import { HOST } from '@/config';
 import { RTSState } from '@/store/slices/rts';
 
-const BASEURL = '/vertc_demo_me_os/login';
+const BASEURL = '/api/v1/login';
 
 // 校验验证码成功时后端返回内容
 export interface IUserInfo {

@@ -121,7 +121,7 @@ export const Disclaimer = 'https://www.volcengine.com/docs/6348/68916';
 export const ReversoContex = 'https://www.volcengine.com/docs/6348/68918';
 export const UserAgreement = 'https://www.volcengine.com/docs/6348/128955';
 export const BASENAME = '/rtc/solution/vertcroom';
-export const HOST = 'http://localhost:8000';
+export const HOST = 'http://service.jusiai.com:8000';
 
 export const userConfig = {
   appId: process.env.REACT_APP_RTC_APP_ID || '',

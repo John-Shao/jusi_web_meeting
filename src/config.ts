@@ -117,11 +117,11 @@ export const BITRATEMAP: { [key: string]: number[] } = {
 export const FRAMERATE = [15, 20, 24];
 
 export const isDev = window.location.hostname.includes('localhost');
-export const Disclaimer = 'https://www.volcengine.com/docs/6348/68916';
-export const ReversoContex = 'https://www.volcengine.com/docs/6348/68918';
-export const UserAgreement = 'https://www.volcengine.com/docs/6348/128955';
+export const Disclaimer = 'https://www.jusiai.com/docs/6348/68916';
+export const ReversoContex = 'https://www.jusiai.com/docs/6348/68918';
+export const UserAgreement = 'https://www.jusiai.com/docs/6348/128955';
 export const BASENAME = '/rtc/solution/vertcroom';
-export const HOST = 'http://service.jusiai.com:8000';
+export const HOST = 'https://login.jusiai.com';
 
 export const userConfig = {
   appId: process.env.REACT_APP_RTC_APP_ID || '',
